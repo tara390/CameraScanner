@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "866141798284",
+    "firebase_url": "https://camera-scanner-41a3b.firebaseio.com",
+    "project_id": "camera-scanner-41a3b",
+    "storage_bucket": "camera-scanner-41a3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866141798284:android:1b5ca393f8ea3cbda8a0a9",
+        "android_client_info": {
+          "package_name": "com.tara.cameraapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866141798284-k5o8nam4vn2hcrnoa482sj7coo6usktl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tara.cameraapplication",
+            "certificate_hash": "41d3c9293ad1b893c40f8f2a562429e224a95f8b"
+          }
+        },
+        {
+          "client_id": "866141798284-812sdq4e5msoiteslua09da9tdllj99p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyDQ649LFtCaBD7zc8mF9HqF6za80Bqe4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866141798284-812sdq4e5msoiteslua09da9tdllj99p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
