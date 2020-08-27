@@ -283,8 +283,9 @@ public class BarcodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(BarcodeActivity.this, QrcodeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
+                finish();
 
             }
         });

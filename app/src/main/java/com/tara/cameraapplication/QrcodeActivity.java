@@ -138,8 +138,9 @@ public class QrcodeActivity extends AppCompatActivity {
                     tvbarcode.setEnabled(true);
                     tvqrcode.setEnabled(false);
                     Intent i = new Intent(QrcodeActivity.this, BarcodeActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
+                    finish();
 
 
 
@@ -148,16 +149,6 @@ public class QrcodeActivity extends AppCompatActivity {
         });
 
 
-        tvqrcode.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View view) {
-                tvqrcode.setClickable(false);
-                tvbarcode.setClickable(true);
-                tvqrcode.setTextColor(getColor(R.color.colorblue));
-                tvbarcode.setTextColor(getColor(R.color.colorgrey));
-            }
-        });
 
 
         btn_start_again = findViewById(R.id.btn_start_again);
