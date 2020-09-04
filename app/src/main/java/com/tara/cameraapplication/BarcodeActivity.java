@@ -109,7 +109,7 @@ public class BarcodeActivity extends AppCompatActivity {
         });
 
         options = new FirebaseVisionBarcodeDetectorOptions.Builder()
-                .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_CODE_128,FirebaseVisionBarcode.FORMAT_CODE_39,FirebaseVisionBarcode.FORMAT_AZTEC)
+                .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_CODE_128, FirebaseVisionBarcode.FORMAT_CODE_39, FirebaseVisionBarcode.FORMAT_AZTEC)
                 .build();
         detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options);
 
@@ -198,13 +198,6 @@ public class BarcodeActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
     private void createDialog(String rawValue) {
 
 
@@ -283,7 +276,7 @@ public class BarcodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(BarcodeActivity.this, QrcodeActivity.class);
-            //    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
 
 

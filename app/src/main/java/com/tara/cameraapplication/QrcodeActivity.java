@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -61,17 +62,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
+import static com.otaliastudios.cameraview.controls.Flash.ON;
 import static com.otaliastudios.cameraview.controls.Flash.TORCH;
 
 public class QrcodeActivity extends AppCompatActivity {
 
     CameraView camera_view;
     boolean isDetected = false;
-
-    ImageView flashon, gallery, flashoff, btn_start_again, camerafront, cameraback;
-    private static final String TAG = "MainActivity";
-    TextView tvqrcode, tvbarcode;
-    ProgressDialog pDialog;
+    String barcode;
+    ImageView flashon, gallery, flashoff, btn_start_again;
+    TextView tvbarcode;
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
 
@@ -105,15 +105,63 @@ public class QrcodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent barcode = new Intent(QrcodeActivity.this, BarcodeActivity.class);
+                barcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(barcode);
             }
         });
 
-        //Button
+        //ImageView
         btn_start_again = findViewById(R.id.btn_start_again);
+        flashoff = findViewById(R.id.flashoff);
+        flashon = findViewById(R.id.flashon);
+        gallery = findViewById(R.id.ivgallery);
+
 
         //Camera
         camera_view = findViewById(R.id.cameraviewforqrcode);
+
+
+        //Image CLick
+
+        flashon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                camera_view.setFlash(OFF);
+                flashoff.setVisibility(View.VISIBLE);
+                flashon.setVisibility(View.GONE);
+
+            }
+        });
+
+        flashoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                camera_view.setFlash(TORCH);
+                flashon.setVisibility(View.VISIBLE);
+                flashoff.setVisibility(View.GONE);
+            }
+        });
+
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra("crop", "true");
+
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("return-data", true);
+                startActivityForResult(
+                        Intent.createChooser(intent, "Complete action using"),
+                        111);
+
+            }
+        });
+
     }
 
 
@@ -133,6 +181,9 @@ public class QrcodeActivity extends AppCompatActivity {
             @Override
             public void process(@NonNull Frame frame) {
                 processimage(getVisioImagefromframe(frame));
+
+
+
             }
         });
 
@@ -236,6 +287,89 @@ public class QrcodeActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch (requestCode) {
+            case 111:
+                if (resultCode == RESULT_OK) {
+//doing some uri parsing
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    InputStream imageStream = null;
+                    try {
+                        //getting the image
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        Toast.makeText(getApplicationContext(), "File not found", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    //decoding bitmap
+                    Bitmap bMap = BitmapFactory.decodeStream(imageStream);
+                    //Scan.setImageURI(selectedImage);// To display selected image in image view
+                    int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
+                    // copy pixel data from the Bitmap into the 'intArray' array
+                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),
+                            bMap.getHeight());
+
+                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(),
+                            bMap.getHeight(), intArray);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+                    Reader reader = new MultiFormatReader();// use this otherwise
+                    // ChecksumException
+                    try {
+                        Hashtable<DecodeHintType, Object> decodeHints = new Hashtable<DecodeHintType, Object>();
+                        decodeHints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+                        decodeHints.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
+
+                        Result result = reader.decode(bitmap, decodeHints);
+                        //*I have created a global string variable by the name of barcode to easily manipulate data across the application*//
+                        barcode = result.getText().toString();
+
+                        //do something with the results for demo i created a popup dialog
+                        if (barcode != null) {
+                            Intent i = new Intent(this, ResultActivity.class);
+                            i.putExtra("message", barcode);
+                            startActivity(i);
+
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setTitle("Scan Result");
+                            builder.setIcon(R.mipmap.ic_launcher);
+                            builder.setMessage("Nothing found try a different image or try again");
+                            AlertDialog alert1 = builder.create();
+                            alert1.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(getBaseContext(), QrcodeActivity.class);
+                                    startActivity(i);
+                                }
+                            });
+
+                            alert1.setCanceledOnTouchOutside(false);
+
+                            alert1.show();
+
+                        }
+                        //the end of do something with the button statement.
+
+                    } catch (NotFoundException e) {
+                        Toast.makeText(getApplicationContext(), "Nothing Found", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (ChecksumException e) {
+                        Toast.makeText(getApplicationContext(), "Something weird happen, i was probably tired to solve this issue", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (FormatException e) {
+                        Toast.makeText(getApplicationContext(), "Wrong Barcode/QR format", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        Toast.makeText(getApplicationContext(), "Something weird happen, i was probably tired to solve this issue", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+        }
     }
 
 
