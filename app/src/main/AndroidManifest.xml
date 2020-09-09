@@ -34,11 +34,20 @@
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
 
-        <activity android:name=".ResultActivity">
+        <activity android:name=".ResultActivity"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".DocumentScanActivity">
+        <activity android:name=".DocumentScanActivity"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask">
         </activity>
-        <activity android:name=".DashboardActivity">
+        <activity android:name=".DashboardActivity"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask">
         </activity>
 
         <meta-data
@@ -50,7 +59,10 @@
 
         <activity
             android:name=".QrcodeActivity"
-            android:theme="@style/Mytheme">
+            android:theme="@style/Mytheme"
+            android:noHistory="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,9 +70,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"
+            android:noHistory="true"
             android:windowSoftInputMode="adjustResize"
-            android:noHistory="true">
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
