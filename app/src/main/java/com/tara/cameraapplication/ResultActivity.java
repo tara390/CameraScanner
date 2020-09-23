@@ -18,9 +18,9 @@ public class ResultActivity extends AppCompatActivity {
     TextView tvresult;
     String result,message;
     ImageView ivweb,ivtext;
-    Button btncopytext;
+   // Button btncopytext;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
@@ -37,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
     private void init() {
         ivweb =findViewById(R.id.ivweb);
         ivtext=findViewById(R.id.ivtext);
-        btncopytext=findViewById(R.id.btn_copytext);
+        //btncopytext=findViewById(R.id.btn_copytext);
 
         tvresult=findViewById(R.id.tvresult);
         ImageView ivbackpressed=findViewById(R.id.ivbackpressed);
@@ -73,7 +73,6 @@ public class ResultActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
-        finish();
         super.onBackPressed();
     }
 }

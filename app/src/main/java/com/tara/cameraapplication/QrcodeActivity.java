@@ -53,8 +53,10 @@ import com.otaliastudios.cameraview.frame.FrameProcessor;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -95,12 +97,6 @@ public class QrcodeActivity extends AppCompatActivity {
             }
         }).check();
 
-    }
-
-    private void init() {
-
-        //TextView
-        tvbarcode = findViewById(R.id.tvbarcode);
         tvbarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +105,14 @@ public class QrcodeActivity extends AppCompatActivity {
                 startActivity(barcode);
             }
         });
+
+
+    }
+
+    private void init() {
+
+        //TextView
+        tvbarcode = findViewById(R.id.tvbarcode);
 
         //ImageView
         btn_start_again = findViewById(R.id.btn_start_again);
@@ -183,7 +187,6 @@ public class QrcodeActivity extends AppCompatActivity {
                 processimage(getVisioImagefromframe(frame));
 
 
-
             }
         });
 
@@ -223,26 +226,37 @@ public class QrcodeActivity extends AppCompatActivity {
             for (FirebaseVisionBarcode item : firebaseVisionBarcodes) {
                 int value = item.getValueType();
                 switch (value) {
-                    case FirebaseVisionBarcode.TYPE_TEXT: {
-                        createResult(item.getRawValue());
-                    }
-                    break;
-                    case FirebaseVisionBarcode.TYPE_URL: {
+                    case FirebaseVisionBarcode.TYPE_TEXT:
+                    case FirebaseVisionBarcode.TYPE_URL:
+
+                    case FirebaseVisionBarcode.TYPE_SMS: {
+
                         createResult(item.getRawValue());
                     }
                     break;
 
                     case FirebaseVisionBarcode.TYPE_CONTACT_INFO: {
 
-                        String info = new StringBuilder("First Name:").append(item.getContactInfo().getName().getFirst())
+                        String info = new StringBuilder("Name:")
+                                .append(" ")
+                                .append(item.getContactInfo().getName().getFormattedName())
                                 .append("\n")
-                                .append("Last Name:")
-                                .append(item.getContactInfo().getName().getLast())
+                                .append("Phone No:")
+                                .append(" ")
+                                .append(item.getContactInfo().getPhones().get(0).getNumber())
                                 .append("\n")
-                                .append(item.getContactInfo().getAddresses().get(0).getAddressLines())
+                                .append("Address:")
+                                .append(" ")
+                                .append(Arrays.toString(item.getContactInfo().getAddresses().get(0).getAddressLines()))
+                                .append("\n")
+                                .append("Website:")
+                                .append(" ")
+                                .append(Arrays.toString((item.getContactInfo().getUrls())))
                                 .append("\n")
                                 .append("Email ID:")
+                                .append(" ")
                                 .append(item.getContactInfo().getEmails().get(0).getAddress()).toString();
+
                         createResult(info);
 
 
@@ -264,7 +278,8 @@ public class QrcodeActivity extends AppCompatActivity {
 
         Intent i = new Intent(QrcodeActivity.this, ResultActivity.class);
         i.putExtra("result", rawValue);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //   i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
 
 
@@ -285,7 +300,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        //   finish();
         super.onBackPressed();
     }
 
