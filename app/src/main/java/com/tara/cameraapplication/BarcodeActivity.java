@@ -109,7 +109,10 @@ public class BarcodeActivity extends AppCompatActivity {
         });
 
         options = new FirebaseVisionBarcodeDetectorOptions.Builder()
-                .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_CODE_128, FirebaseVisionBarcode.FORMAT_CODE_39, FirebaseVisionBarcode.FORMAT_AZTEC)
+                .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_CODE_128,
+                        FirebaseVisionBarcode.FORMAT_CODE_39,
+                        FirebaseVisionBarcode.FORMAT_EAN_13,
+                        FirebaseVisionBarcode.FORMAT_UPC_A)
                 .build();
         detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options);
 

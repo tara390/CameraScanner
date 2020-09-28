@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -62,6 +64,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
 import static com.otaliastudios.cameraview.controls.Flash.ON;
@@ -85,7 +88,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
 
         init();
-        Dexter.withActivity(this).withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}).withListener(new MultiplePermissionsListener() {
+        Dexter.withActivity(this).withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,Manifest.permission.SEND_SMS}).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                 setupCamera();
@@ -227,37 +230,53 @@ public class QrcodeActivity extends AppCompatActivity {
                 int value = item.getValueType();
                 switch (value) {
                     case FirebaseVisionBarcode.TYPE_TEXT:
-                    case FirebaseVisionBarcode.TYPE_URL:
-
-                    case FirebaseVisionBarcode.TYPE_SMS: {
+                    case FirebaseVisionBarcode.TYPE_URL: {
 
                         createResult(item.getRawValue());
                     }
                     break;
 
+                    case FirebaseVisionBarcode.TYPE_SMS: {
+                        String message = Objects.requireNonNull(item.getSms()).getMessage();
+                        String phone = item.getSms().getPhoneNumber();
+
+                        createforsms(message,phone);
+
+
+                    }
+                    break;
+
+
+                    case FirebaseVisionBarcode.TYPE_GEO: {
+                        double lat = Objects.requireNonNull(item.getGeoPoint()).getLat();
+                        double longitude = item.getGeoPoint().getLng();
+                        createforlocation(lat, longitude);
+                    }
+                    break;
+
+
                     case FirebaseVisionBarcode.TYPE_CONTACT_INFO: {
 
-                        String info = new StringBuilder("Name:")
-                                .append(" ")
-                                .append(item.getContactInfo().getName().getFormattedName())
-                                .append("\n")
-                                .append("Phone No:")
-                                .append(" ")
-                                .append(item.getContactInfo().getPhones().get(0).getNumber())
-                                .append("\n")
-                                .append("Address:")
-                                .append(" ")
-                                .append(Arrays.toString(item.getContactInfo().getAddresses().get(0).getAddressLines()))
-                                .append("\n")
-                                .append("Website:")
-                                .append(" ")
-                                .append(Arrays.toString((item.getContactInfo().getUrls())))
-                                .append("\n")
-                                .append("Email ID:")
-                                .append(" ")
-                                .append(item.getContactInfo().getEmails().get(0).getAddress()).toString();
+                        String name, phone, address, email, website;
 
-                        createResult(info);
+                        name = (" " +
+                                item.getContactInfo().getName().getFormattedName());
+
+                        phone = (" " +
+                                item.getContactInfo().getPhones().get(0).getNumber());
+
+                        address = " " +
+                                Arrays.toString(item.getContactInfo().getAddresses().get(0).getAddressLines());
+
+                        email = (" " +
+                                item.getContactInfo().getEmails().get(0).getAddress());
+
+
+                        website = " " +
+                                Arrays.toString(item.getContactInfo().getUrls());
+
+
+                        createforResult(name, phone, address, email, website);
 
 
                     }
@@ -271,6 +290,36 @@ public class QrcodeActivity extends AppCompatActivity {
                 }
             }
         }
+
+    }
+
+    private void createforsms(String message, String phone) {
+
+        Intent sms=new Intent(QrcodeActivity.this,SmsActivity.class);
+        sms.putExtra("phone",phone);
+        sms.putExtra("message",message);
+        startActivity(sms);
+
+    }
+
+    private void createforlocation(double lat, double longitude) {
+
+        Intent geolocation = new Intent(QrcodeActivity.this, GeoLocationActivity.class);
+        geolocation.putExtra("lat", lat);
+        geolocation.putExtra("longitude", longitude);
+        startActivity(geolocation);
+
+    }
+
+    private void createforResult(String name, String phone, String address, String email, String website) {
+
+        Intent profile = new Intent(QrcodeActivity.this, ProfileActivity.class);
+        profile.putExtra("name", name);
+        profile.putExtra("phone", phone);
+        profile.putExtra("address", address);
+        profile.putExtra("email", email);
+        profile.putExtra("website", website);
+        startActivity(profile);
 
     }
 

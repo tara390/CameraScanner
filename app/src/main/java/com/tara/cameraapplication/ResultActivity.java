@@ -42,7 +42,7 @@ public class ResultActivity extends AppCompatActivity {
         tvresult=findViewById(R.id.tvresult);
         ImageView ivbackpressed=findViewById(R.id.ivbackpressed);
         if (message!=null){
-            tvresult.setText(message);
+            tvresult.setHint(message);
 
 
         }else {

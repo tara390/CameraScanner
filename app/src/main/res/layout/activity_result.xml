@@ -71,10 +71,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="monospace"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Result"
+                android:text="@string/result"
                 android:textColor="@color/colorblue"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -138,10 +137,10 @@
                 android:linksClickable="true"
                 android:padding="10dp"
                 android:scrollbars="vertical"
-                android:text="Result"
+                android:text="@string/result"
                 android:textAlignment="textStart"
-                android:textColor="@color/colorblue"
-                android:textColorLink="@color/colorblue"
+                android:textColor="@color/colorgrey"
+                android:textColorLink="@color/colorgrey"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
