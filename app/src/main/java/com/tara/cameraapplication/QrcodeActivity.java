@@ -88,7 +88,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
 
         init();
-        Dexter.withActivity(this).withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,Manifest.permission.SEND_SMS}).withListener(new MultiplePermissionsListener() {
+        Dexter.withActivity(this).withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE}).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                 setupCamera();

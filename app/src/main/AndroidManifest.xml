@@ -37,7 +37,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAyDQ649LFtCaBD7zc8mF9HqF6za80Bqe4" />
+            android:value="AIzaSyDDblRdPa4e0gpCnBCRpXEicwOF_404zGY" />
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />

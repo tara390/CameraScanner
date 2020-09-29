@@ -125,7 +125,7 @@ public class GeoLocationActivity extends FragmentActivity implements OnMapReadyC
         CameraUpdate updatePosition = CameraUpdateFactory.newLatLng(position);
 
         // Creating CameraUpdate object for zoom
-        CameraUpdate updateZoom = CameraUpdateFactory.zoomTo(8);
+        CameraUpdate updateZoom = CameraUpdateFactory.zoomTo(10);
 
         // Updating the camera position to the user input latitude and longitude
         googleMap.moveCamera(updatePosition);
