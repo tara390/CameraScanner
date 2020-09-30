@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+  >
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/geobar"
@@ -48,12 +48,14 @@
 
     <fragment
         android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       android:layout_below="@id/geobar"
 
-        class="com.google.android.gms.maps.SupportMapFragment"
-        />
+        android:layout_below="@id/geobar"
+        android:layout_marginTop="6dp" />
+
+
 
 
 

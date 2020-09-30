@@ -12,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class SmsActivity extends AppCompatActivity {
@@ -20,6 +25,7 @@ public class SmsActivity extends AppCompatActivity {
     String phone, message;
     Button btnsms;
     ImageView ivsmsbackpressed;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +37,28 @@ public class SmsActivity extends AppCompatActivity {
         phone = getIntent().getStringExtra("phone");
         message = getIntent().getStringExtra("message");
 
+        MobileAdsview();
         initviews();
         setSms();
         btnsmsclick();
 
+
+
+
+
+    }
+
+    private void MobileAdsview() {
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        adView = findViewById(R.id.adsinsmsview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
     }
 

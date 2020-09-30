@@ -79,7 +79,7 @@ public class BarcodeActivity extends AppCompatActivity {
         detector = FirebaseVision.getInstance()
                 .getVisionBarcodeDetector();
         Dexter.withActivity(this)
-                .withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
+                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -110,7 +110,12 @@ public class BarcodeActivity extends AppCompatActivity {
 
         options = new FirebaseVisionBarcodeDetectorOptions.Builder()
                 .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_CODE_128,
+                        FirebaseVisionBarcode.FORMAT_EAN_8,
+                        FirebaseVisionBarcode.FORMAT_UPC_E,
+                        FirebaseVisionBarcode.TYPE_ISBN,
+                        FirebaseVisionBarcode.FORMAT_ITF,
                         FirebaseVisionBarcode.FORMAT_CODE_39,
+                        FirebaseVisionBarcode.FORMAT_CODE_93,
                         FirebaseVisionBarcode.FORMAT_EAN_13,
                         FirebaseVisionBarcode.FORMAT_UPC_A)
                 .build();
@@ -206,7 +211,7 @@ public class BarcodeActivity extends AppCompatActivity {
 
         Intent intent = new Intent(BarcodeActivity.this, ResultActivity.class);
         intent.putExtra("result", rawValue);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
     }
@@ -325,7 +330,7 @@ public class BarcodeActivity extends AppCompatActivity {
 
                         Result result = reader.decode(bitmap, decodeHints);
                         //*I have created a global string variable by the name of barcode to easily manipulate data across the application*//
-                        barcod = result.getText().toString();
+                        barcod = result.getText();
 
                         //do something with the results for demo i created a popup dialog
                         if (barcod != null) {

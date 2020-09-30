@@ -14,45 +14,65 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 public class ResultActivity extends AppCompatActivity {
     TextView tvresult;
-    String result,message;
-    ImageView ivweb,ivtext;
-   // Button btncopytext;
+    String result, message;
+    ImageView ivweb, ivtext;
+    AdView mAdView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        result=getIntent().getStringExtra("result");
-        message=getIntent().getStringExtra("message");
+        result = getIntent().getStringExtra("result");
+        message = getIntent().getStringExtra("message");
 
         init();
+        MobileAdsview();
+
+    }
+
+    private void MobileAdsview() {
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdView = findViewById(R.id.adsview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
     }
 
 
-
-
     private void init() {
-        ivweb =findViewById(R.id.ivweb);
-        ivtext=findViewById(R.id.ivtext);
+        ivweb = findViewById(R.id.ivweb);
+        ivtext = findViewById(R.id.ivtext);
         //btncopytext=findViewById(R.id.btn_copytext);
 
-        tvresult=findViewById(R.id.tvresult);
-        ImageView ivbackpressed=findViewById(R.id.ivbackpressed);
-        if (message!=null){
+        tvresult = findViewById(R.id.tvresult);
+        ImageView ivbackpressed = findViewById(R.id.ivbackpressed);
+        if (message != null) {
             tvresult.setHint(message);
 
 
-        }else {
+        } else {
 
             tvresult.setText(result);
         }
         tvresult.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                ClipboardManager cm = (ClipboardManager)getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setText(tvresult.getText().toString());
                 Toast.makeText(getApplicationContext(), "Copied", Toast.LENGTH_SHORT).show();
                 tvresult.setTextIsSelectable(true);

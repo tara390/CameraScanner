@@ -63,7 +63,12 @@ dependencies {
 
 
 
-    //Qrcode
+    //Gallery to show the result of qrcode
     implementation 'com.google.zxing:core:3.4.0'
     implementation 'com.google.zxing:android-core:3.3.0'
+
+
+    //Ads format
+    implementation 'com.google.android.gms:play-services-ads:19.4.0'
+
 }

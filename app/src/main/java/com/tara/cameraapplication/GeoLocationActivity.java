@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
@@ -44,9 +45,16 @@ public class GeoLocationActivity extends FragmentActivity implements OnMapReadyC
         lat = getIntent().getDoubleExtra("lat", 0);
         longitude = getIntent().getDoubleExtra("longitude", 0);
 
+        MobileAdsforgeo();
         initviews();
 
         Imagebuttonclick();
+    }
+
+    private void MobileAdsforgeo() {
+
+
+
     }
 
     private void Imagebuttonclick() {
