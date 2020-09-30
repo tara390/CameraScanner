@@ -236,6 +236,17 @@ public class QrcodeActivity extends AppCompatActivity {
                     }
                     break;
 
+                    case FirebaseVisionBarcode.TYPE_PHONE:{
+
+                        String mobile=item.getPhone().getNumber();
+                        Uri number = Uri.parse("tel:" + mobile);
+                        Intent dial = new Intent(Intent.ACTION_DIAL);
+                        dial.setData(number);
+                        startActivity(dial);
+
+                    }
+                    break;
+
                     case FirebaseVisionBarcode.TYPE_SMS: {
                         String message = Objects.requireNonNull(item.getSms()).getMessage();
                         String phone = item.getSms().getPhoneNumber();
