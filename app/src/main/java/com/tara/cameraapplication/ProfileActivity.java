@@ -17,8 +17,8 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 
 public class ProfileActivity extends AppCompatActivity {
 
-    String name,phone,email,website,address;
-    TextView tvName,tvphone,tvemail,tvwebsite,tvaddress;
+    String name,phone,email,website;
+    TextView tvName,tvphone,tvemail,tvwebsite;
     ImageView ivprofilebackpressed;
     AdView adsforprofile;
     @Override
@@ -28,7 +28,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         name=getIntent().getStringExtra("name");
         phone=getIntent().getStringExtra("phone");
-        address=getIntent().getStringExtra("address");
         email=getIntent().getStringExtra("email");
         website=getIntent().getStringExtra("website");
 
@@ -76,7 +75,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         tvName.setHint(name);
         tvphone.setHint(phone);
-        tvaddress.setHint(address);
         tvemail.setHint(email);
         tvwebsite.setText(website);
 
@@ -85,7 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
     private void initviews() {
         tvName=findViewById(R.id.tvname);
         tvphone=findViewById(R.id.tvphone);
-        tvaddress=findViewById(R.id.tvaddress);
         tvemail=findViewById(R.id.tvemail);
         tvwebsite=findViewById(R.id.tvwebsite);
         ivprofilebackpressed=findViewById(R.id.ivprofilebackpressed);

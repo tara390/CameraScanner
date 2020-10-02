@@ -53,7 +53,7 @@
         android:layout_height="match_parent"
 
         android:layout_below="@id/geobar"
-        android:layout_marginTop="6dp" />
+        android:layout_marginTop="1dp" />
 
 
 

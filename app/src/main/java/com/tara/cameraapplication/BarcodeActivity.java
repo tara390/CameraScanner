@@ -306,9 +306,11 @@ public class BarcodeActivity extends AppCompatActivity {
                             bMap.getHeight(), intArray);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
+
                     Reader reader = new MultiFormatReader();// use this otherwise
                     // ChecksumException
                     try {
+
                         Hashtable<DecodeHintType, Object> decodeHints = new Hashtable<DecodeHintType, Object>();
                         decodeHints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
                         decodeHints.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
@@ -321,7 +323,7 @@ public class BarcodeActivity extends AppCompatActivity {
                         if (barcod != null) {
                             Intent i = new Intent(this, ResultActivity.class);
                             i.putExtra("message", barcod);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
 
