@@ -75,25 +75,10 @@ public class BarcodeActivity extends AppCompatActivity {
 
 
         init();
-
-        detector = FirebaseVision.getInstance()
-                .getVisionBarcodeDetector();
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+        setupCameraforbarcode();
 
 
-                        setupCameraforbarcode();
-                        //onBackPressed();
-                    }
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-
-                    }
-                }).check();
 
 
     }

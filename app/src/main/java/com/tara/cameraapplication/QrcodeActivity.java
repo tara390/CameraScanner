@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -63,9 +64,16 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.jsoup.Jsoup;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
 import static com.otaliastudios.cameraview.controls.Flash.TORCH;
 
@@ -79,17 +87,38 @@ public class QrcodeActivity extends AppCompatActivity {
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
 
+    public static final int RequestPermissionCode = 7;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_qrcode);
 
-        checkupdateproject();
-
 
         init();
 
+        if (CheckingPermissionIsEnabledOrNot()) {
+            //Entered in if Permission is granted
+            checkupdateproject();
+
+            setupCamera();
+
+            tvbarcode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent barcode = new Intent(QrcodeActivity.this, BarcodeActivity.class);
+                    barcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(barcode);
+                }
+            });
+        } else {
+
+            //Calling method to enable permission.
+            RequestMultiplePermission();
+
+        }
+/*
         Dexter.withActivity(this).withPermissions(Manifest.permission.CAMERA,Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
@@ -100,16 +129,7 @@ public class QrcodeActivity extends AppCompatActivity {
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
 
             }
-        }).check();
-
-        tvbarcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent barcode = new Intent(QrcodeActivity.this, BarcodeActivity.class);
-                barcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(barcode);
-            }
-        });
+        }).check();*/
 
 
     }
@@ -153,16 +173,15 @@ public class QrcodeActivity extends AppCompatActivity {
    */
 
 
-        AppUpdateManager appUpdateManager= AppUpdateManagerFactory.create(QrcodeActivity.this);
-        Task<AppUpdateInfo> appUpdateInfoTask=appUpdateManager.getAppUpdateInfo();
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(QrcodeActivity.this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         appUpdateInfoTask.addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
             @Override
             public void onSuccess(AppUpdateInfo result) {
 
-                if (result.updateAvailability()== UpdateAvailability.UPDATE_AVAILABLE &&  result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
-                {
+                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                     try {
-                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,QrcodeActivity.this,11);
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, QrcodeActivity.this, 11);
                     } catch (IntentSender.SendIntentException e) {
                         e.printStackTrace();
                     }
@@ -171,9 +190,6 @@ public class QrcodeActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 
     private void init() {
@@ -300,9 +316,9 @@ public class QrcodeActivity extends AppCompatActivity {
                     }
                     break;
 
-                    case FirebaseVisionBarcode.TYPE_PHONE:{
+                    case FirebaseVisionBarcode.TYPE_PHONE: {
 
-                        String mobile=item.getPhone().getNumber();
+                        String mobile = item.getPhone().getNumber();
                         Uri number = Uri.parse("tel:" + mobile);
                         Intent dial = new Intent(Intent.ACTION_DIAL);
                         dial.setData(number);
@@ -315,7 +331,7 @@ public class QrcodeActivity extends AppCompatActivity {
                         String message = Objects.requireNonNull(item.getSms()).getMessage();
                         String phone = item.getSms().getPhoneNumber();
 
-                        createforsms(message,phone);
+                        createforsms(message, phone);
 
 
                     }
@@ -370,9 +386,9 @@ public class QrcodeActivity extends AppCompatActivity {
 
     private void createforsms(String message, String phone) {
 
-        Intent sms=new Intent(QrcodeActivity.this,SmsActivity.class);
-        sms.putExtra("phone",phone);
-        sms.putExtra("message",message);
+        Intent sms = new Intent(QrcodeActivity.this, SmsActivity.class);
+        sms.putExtra("phone", phone);
+        sms.putExtra("message", message);
         startActivity(sms);
 
     }
@@ -513,7 +529,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    private class VersionChecker extends AsyncTask<String,String,String> {
+    private class VersionChecker extends AsyncTask<String, String, String> {
 
         private String newVersion;
 
@@ -521,7 +537,7 @@ public class QrcodeActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
 
             try {
-                newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id="+getPackageName())
+                newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + getPackageName())
                         .timeout(30000)
                         .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                         .referrer("http://www.google.com")
@@ -529,14 +545,98 @@ public class QrcodeActivity extends AppCompatActivity {
                         .select(".hAyfc .htlgb")
                         .get(7)
                         .ownText();
-                return  newVersion;
+                return newVersion;
 
             } catch (IOException e) {
-                Log.e("Camerascannerforupdate", "doInBackground: ",e);
+                Log.e("Camerascannerforupdate", "doInBackground: ", e);
                 return newVersion;
             }
 
         }
 
+    }
+
+    public boolean CheckingPermissionIsEnabledOrNot() {
+
+        int FirstPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
+        int SecondPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS);
+        int ThirdPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int FourthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
+        int FifthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
+
+        return FirstPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                SecondPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                ThirdPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                FourthPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                FifthPermissionResult == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    private void RequestMultiplePermission() {
+
+        // Creating String Array with Permissions.
+        ActivityCompat.requestPermissions(QrcodeActivity.this, new String[]
+                {
+                        CAMERA,
+                        SEND_SMS,
+                        WRITE_EXTERNAL_STORAGE,
+                        ACCESS_FINE_LOCATION,
+                        RECORD_AUDIO
+                }, RequestPermissionCode);
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                && grantResults[2] == PackageManager.PERMISSION_GRANTED
+                && grantResults[3] == PackageManager.PERMISSION_GRANTED
+                && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
+            // now, you have permission go ahead
+
+           /* Intent reOpen = new Intent (QrcodeActivity.this, QrcodeActivity.class);
+            startActivity(reOpen);
+            finish();
+            overridePendingTransition( 0, 0);
+            startActivity(getIntent());
+            overridePendingTransition( 0, 0);*/
+           setupCamera();
+
+        } else {
+
+            Toast.makeText(this, "Please allow all the permission ", Toast.LENGTH_LONG).show();
+            finish();
+
+
+     /*       if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.READ_CALL_LOG)) {
+                // now, user has denied permission (but not permanently!)
+
+            } else {
+
+                // now, user has denied permission permanently!
+
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "You have previously declined this permission.\n" +
+                        "You must approve this permission in \"Permissions\" in the app settings on your device.", Snackbar.LENGTH_LONG).setAction("Settings", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
+
+                    }
+                });
+                View snackbarView = snackbar.getView();
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setMaxLines(5);  //Or as much as you need
+                snackbar.show();
+
+            }
+*/
+        }
+        return;
     }
 }
