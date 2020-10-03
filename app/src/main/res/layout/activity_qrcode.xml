@@ -129,11 +129,11 @@
                     android:id="@+id/ivgallery"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                   android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/gallery" />
+                    android:src="@drawable/gallery"
+                    android:visibility="visible" />
             </RelativeLayout>
 
 

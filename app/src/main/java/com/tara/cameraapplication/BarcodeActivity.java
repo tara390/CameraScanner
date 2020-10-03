@@ -98,6 +98,7 @@ public class BarcodeActivity extends AppCompatActivity {
                         FirebaseVisionBarcode.FORMAT_EAN_8,
                         FirebaseVisionBarcode.FORMAT_UPC_E,
                         FirebaseVisionBarcode.TYPE_ISBN,
+                        FirebaseVisionBarcode.FORMAT_CODABAR,
                         FirebaseVisionBarcode.FORMAT_ITF,
                         FirebaseVisionBarcode.FORMAT_CODE_39,
                         FirebaseVisionBarcode.FORMAT_CODE_93,
