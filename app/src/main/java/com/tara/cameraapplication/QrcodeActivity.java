@@ -71,6 +71,7 @@ import org.jsoup.Jsoup;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.SEND_SMS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -555,16 +556,16 @@ public class QrcodeActivity extends AppCompatActivity {
     public boolean CheckingPermissionIsEnabledOrNot() {
 
         int FirstPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
-        int SecondPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS);
-        int ThirdPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int FourthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
-        int FifthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
+        //int  = ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS);
+        int SecondPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int ThirdPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
+        int FourthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
 
         return FirstPermissionResult == PackageManager.PERMISSION_GRANTED &&
                 SecondPermissionResult == PackageManager.PERMISSION_GRANTED &&
                 ThirdPermissionResult == PackageManager.PERMISSION_GRANTED &&
-                FourthPermissionResult == PackageManager.PERMISSION_GRANTED &&
-                FifthPermissionResult == PackageManager.PERMISSION_GRANTED;
+                FourthPermissionResult == PackageManager.PERMISSION_GRANTED;
+               // FifthPermissionResult == PackageManager.PERMISSION_GRANTED;
     }
 
 
@@ -574,7 +575,6 @@ public class QrcodeActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(QrcodeActivity.this, new String[]
                 {
                         CAMERA,
-                        SEND_SMS,
                         WRITE_EXTERNAL_STORAGE,
                         ACCESS_FINE_LOCATION,
                         RECORD_AUDIO
@@ -591,7 +591,7 @@ public class QrcodeActivity extends AppCompatActivity {
                 && grantResults[1] == PackageManager.PERMISSION_GRANTED
                 && grantResults[2] == PackageManager.PERMISSION_GRANTED
                 && grantResults[3] == PackageManager.PERMISSION_GRANTED
-                && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
+               ) {
             // now, you have permission go ahead
 
            /* Intent reOpen = new Intent (QrcodeActivity.this, QrcodeActivity.class);

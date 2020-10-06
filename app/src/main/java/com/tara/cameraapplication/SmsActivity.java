@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -91,12 +92,13 @@ public class SmsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 try {
-                    SmsManager smsMgrVar = SmsManager.getDefault();
-                    smsMgrVar.sendTextMessage(tvphone_no.getText().toString(), null, tvmessage.getText().toString(), null, null);
-                    Toast.makeText(getApplicationContext(), "Message Sent",
-                            Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse( "sms:" + tvphone_no.getText().toString() ) );
+                    intent.putExtra( "sms_body", tvmessage.getText().toString() );
+                    startActivity(intent);
+                  /*  Toast.makeText(getApplicationContext(), "Message Sent",
+                            Toast.LENGTH_LONG).show();*/
                 } catch (Exception ErrVar) {
-                    Toast.makeText(getApplicationContext(), ErrVar.getMessage().toString(),
+                    Toast.makeText(getApplicationContext(), ErrVar.getMessage(),
                             Toast.LENGTH_LONG).show();
                     ErrVar.printStackTrace();
                 }
