@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -41,6 +42,11 @@ public class ResultActivity extends AppCompatActivity {
 
     private void MobileAdsview() {
 
+
+        AdView adView=new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId("ca-app-pub-8674673470489334/2613331722");
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -62,7 +68,7 @@ public class ResultActivity extends AppCompatActivity {
         tvresult = findViewById(R.id.tvresult);
         ImageView ivbackpressed = findViewById(R.id.ivbackpressed);
         if (message != null) {
-            tvresult.setHint(message);
+            tvresult.setText(message);
 
 
         } else {

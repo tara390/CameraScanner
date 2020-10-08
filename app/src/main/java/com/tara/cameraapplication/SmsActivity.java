@@ -51,12 +51,7 @@ public class SmsActivity extends AppCompatActivity {
 
     private void MobileAdsview() {
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-
+        MobileAds.initialize(this,"ca-app-pub-8674673470489334~6991560436");
         adView = findViewById(R.id.adsinsmsview);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);

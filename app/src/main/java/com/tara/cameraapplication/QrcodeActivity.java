@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -88,6 +90,7 @@ public class QrcodeActivity extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
+    LinearLayout linearLayout;
 
     public static final int RequestPermissionCode = 7;
 
@@ -98,6 +101,10 @@ public class QrcodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode);
 
 
+
+
+
+
         init();
 
         if (CheckingPermissionIsEnabledOrNot()) {
@@ -105,6 +112,22 @@ public class QrcodeActivity extends AppCompatActivity {
             checkupdateproject();
 
             setupCamera();
+
+
+            Snackbar snackbar = Snackbar
+                    .make(linearLayout, "Please rate our application ", Snackbar.LENGTH_LONG)
+                    .setAction("Go", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            launchMarket();
+
+                        }
+                    });
+
+            snackbar.setDuration(8000);
+            snackbar.setActionTextColor(getColor(R.color.colorblue));
+            snackbar.show();
+
 
             tvbarcode.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,6 +157,18 @@ public class QrcodeActivity extends AppCompatActivity {
         }).check();*/
 
 
+    }
+
+
+
+   private void launchMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(myAppLinkToMarket);
+        } catch (Exception e) {
+            Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -195,6 +230,10 @@ public class QrcodeActivity extends AppCompatActivity {
 
 
     private void init() {
+
+        //Linear layout for snackbar
+        linearLayout=findViewById(R.id.linearLayout);
+
 
         //TextView
         tvbarcode = findViewById(R.id.tvbarcode);
@@ -579,6 +618,21 @@ public class QrcodeActivity extends AppCompatActivity {
                         ACCESS_FINE_LOCATION,
                         RECORD_AUDIO
                 }, RequestPermissionCode);
+
+        Snackbar snackbar = Snackbar
+                .make(linearLayout, "Please rate our application ", Snackbar.LENGTH_LONG)
+                .setAction("Go", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        launchMarket();
+
+                    }
+                });
+
+        snackbar.setDuration(8000);
+        snackbar.setActionTextColor(getColor(R.color.colorblue));
+        snackbar.show();
+
 
     }
 
