@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.tara.cameraapplication.Document.DocumentScanActivity;
+import com.tara.cameraapplication.Qrcode.QrcodeActivity;
+
 public class DashboardActivity extends AppCompatActivity {
 
     CardView documentscan, qrcodescan;

@@ -1,8 +1,7 @@
-package com.tara.cameraapplication;
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.Activity;
@@ -11,10 +10,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tara.cameraapplication.R;
 
 import java.util.List;
 import java.util.Locale;

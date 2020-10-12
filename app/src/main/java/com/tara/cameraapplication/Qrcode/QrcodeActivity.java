@@ -1,8 +1,6 @@
-package com.tara.cameraapplication;
+package com.tara.cameraapplication.Qrcode;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -11,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,14 +45,11 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
+import com.tara.cameraapplication.Barcode.BarcodeActivity;
+import com.tara.cameraapplication.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,6 +60,7 @@ import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -73,9 +70,7 @@ import org.jsoup.Jsoup;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.RECORD_AUDIO;
-import static android.Manifest.permission.SEND_SMS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
 import static com.otaliastudios.cameraview.controls.Flash.TORCH;
@@ -87,13 +82,14 @@ public class QrcodeActivity extends AppCompatActivity {
     String barcode;
     ImageView flashon, gallery, flashoff, btn_start_again;
     TextView tvbarcode;
-    private static final int SELECT_PHOTO = 100;
+    int Request_code = 100;
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
     LinearLayout linearLayout;
 
     public static final int RequestPermissionCode = 7;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +105,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
         if (CheckingPermissionIsEnabledOrNot()) {
             //Entered in if Permission is granted
-            checkupdateproject();
+
 
             setupCamera();
 
@@ -135,6 +131,7 @@ public class QrcodeActivity extends AppCompatActivity {
                     Intent barcode = new Intent(QrcodeActivity.this, BarcodeActivity.class);
                     barcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(barcode);
+                    finish();
                 }
             });
         } else {
@@ -172,61 +169,6 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
-    private void checkupdateproject() {
-
-
-   /*     VersionChecker versionChecker = new VersionChecker();
-        try
-        {   String appVersionName = BuildConfig.VERSION_NAME;
-            String mLatestVersionName = versionChecker.execute().get();
-            if(!appVersionName.equals(mLatestVersionName)){
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(QrcodeActivity.this);
-                alertDialog.setTitle("Please update your app");
-                alertDialog.setMessage("This app version is no longer supported. Please update your app from the Play Store.");
-                alertDialog.setPositiveButton("UPDATE NOW", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        final String appPackageName = getPackageName();
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                        } catch (android.content.ActivityNotFoundException anfe) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                        }
-                    }
-                });
-                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                });
-                alertDialog.show();
-            }
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-   */
-
-
-        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(QrcodeActivity.this);
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-        appUpdateInfoTask.addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
-
-                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, QrcodeActivity.this, 11);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-    }
 
 
     private void init() {
@@ -608,6 +550,7 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void RequestMultiplePermission() {
 
         // Creating String Array with Permissions.

@@ -1,20 +1,29 @@
 package com.tara.cameraapplication;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
+import com.tara.cameraapplication.Qrcode.QrcodeActivity;
 
 public class MainActivity extends AppCompatActivity {
     Animation topanim;
-
+    int REQUEST_CODE=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         //making this activity full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        checkupdate();
 
 
         topanim = AnimationUtils.loadAnimation(this, R.anim.animation);
@@ -36,9 +47,54 @@ public class MainActivity extends AppCompatActivity {
                 //2 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
                 finish();
             }
         }, 4000);
+    }
+
+    private void checkupdate() {
+
+
+        final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
+
+
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, MainActivity.this, REQUEST_CODE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode==REQUEST_CODE){
+            Toast.makeText(this, "Start Download", Toast.LENGTH_SHORT).show();
+
+
+            if (requestCode!=RESULT_OK){
+
+                Log.d("TAG", "Upload fail"+requestCode);
+
+            }
+
+        }
+
     }
 }

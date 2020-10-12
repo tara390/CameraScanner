@@ -1,4 +1,4 @@
-package com.tara.cameraapplication;
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +19,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.tara.cameraapplication.R;
 
 public class SmsActivity extends AppCompatActivity {
 
