@@ -14,6 +14,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.tara.cameraapplication.Barcode.BarcodeActivity;
 import com.tara.cameraapplication.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -67,8 +68,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
+        Intent onback=new Intent(this, QrcodeActivity.class);
+        onback.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(onback);
+        overridePendingTransition(0, 0);
         super.onBackPressed();
     }
 

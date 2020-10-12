@@ -383,7 +383,10 @@ public class QrcodeActivity extends AppCompatActivity {
                         Uri number = Uri.parse("tel:" + mobile);
                         Intent dial = new Intent(Intent.ACTION_DIAL);
                         dial.setData(number);
+                        dial.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(dial);
+                        overridePendingTransition(0, 0);
+
 
                     }
                     break;
@@ -448,7 +451,9 @@ public class QrcodeActivity extends AppCompatActivity {
         Intent sms = new Intent(QrcodeActivity.this, SmsActivity.class);
         sms.putExtra("phone", phone);
         sms.putExtra("message", message);
+        sms.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(sms);
+        overridePendingTransition(0, 0);
 
     }
 
@@ -457,7 +462,10 @@ public class QrcodeActivity extends AppCompatActivity {
         Intent geolocation = new Intent(QrcodeActivity.this, GeoLocationActivity.class);
         geolocation.putExtra("lat", lat);
         geolocation.putExtra("longitude", longitude);
+        geolocation.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(geolocation);
+        overridePendingTransition(0, 0);
+
 
     }
 
@@ -468,7 +476,9 @@ public class QrcodeActivity extends AppCompatActivity {
         profile.putExtra("phone", phone);
         profile.putExtra("email", email);
         profile.putExtra("website", website);
+        profile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(profile);
+        overridePendingTransition(0, 0);
 
     }
 
@@ -476,9 +486,10 @@ public class QrcodeActivity extends AppCompatActivity {
 
         Intent i = new Intent(QrcodeActivity.this, ResultActivity.class);
         i.putExtra("result", rawValue);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //   i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
+        overridePendingTransition(0, 0);
+
 
 
     }

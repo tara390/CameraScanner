@@ -209,9 +209,12 @@ public class BarcodeActivity extends AppCompatActivity {
 
         Intent intent = new Intent(BarcodeActivity.this, ResultforbarcodeActivity.class);
         intent.putExtra("barcode", rawValue);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //
         startActivity(intent);
+        overridePendingTransition(0, 0);
 
 
     }

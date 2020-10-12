@@ -19,6 +19,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.tara.cameraapplication.Barcode.BarcodeActivity;
 import com.tara.cameraapplication.R;
 
 public class SmsActivity extends AppCompatActivity {
@@ -108,8 +109,10 @@ public class SmsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
+        Intent onback=new Intent(this, QrcodeActivity.class);
+        onback.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(onback);
+        overridePendingTransition(0, 0);
         super.onBackPressed();
     }
 
