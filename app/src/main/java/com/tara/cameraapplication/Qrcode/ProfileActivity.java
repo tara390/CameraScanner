@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.tara.cameraapplication.Barcode.BarcodeActivity;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkAds;
 import com.tara.cameraapplication.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -42,15 +40,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void MobileAdsforprofile() {
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+        AudienceNetworkAds.initialize(this);
+        adsforprofile=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
+        LinearLayout ads=findViewById(R.id.adsforprofile);
+        ads.addView(adsforprofile);
+        adsforprofile.loadAd();
 
-        adsforprofile = findViewById(R.id.adsinprofileview);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adsforprofile.loadAd(adRequest);
 
     }
 
