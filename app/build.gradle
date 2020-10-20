@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.tara.cameraapplication"
+        applicationId "com.manddprojectconsultant.camerascanner"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 4
@@ -16,7 +17,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -55,7 +56,11 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+
+    //dependency for permission
     implementation 'com.karumi:dexter:6.2.1'
+
 
 
     //Map

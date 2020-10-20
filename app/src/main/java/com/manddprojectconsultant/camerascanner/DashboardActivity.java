@@ -1,4 +1,4 @@
-package com.tara.cameraapplication;
+package com.manddprojectconsultant.camerascanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.tara.cameraapplication.Document.DocumentScanActivity;
-import com.tara.cameraapplication.Qrcode.QrcodeActivity;
+import com.manddprojectconsultant.camerascanner.Document.DocumentScanActivity;
+import com.manddprojectconsultant.camerascanner.Qrcode.QrcodeActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 

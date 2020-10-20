@@ -1,4 +1,4 @@
-package com.tara.cameraapplication.Barcode;
+package com.manddprojectconsultant.camerascanner.Barcode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -39,9 +39,9 @@ import com.google.zxing.common.HybridBinarizer;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
-import com.tara.cameraapplication.Qrcode.QrcodeActivity;
-import com.tara.cameraapplication.R;
-import com.tara.cameraapplication.Qrcode.ResultActivity;
+import com.manddprojectconsultant.camerascanner.Qrcode.QrcodeActivity;
+import com.manddprojectconsultant.camerascanner.R;
+import com.manddprojectconsultant.camerascanner.Qrcode.ResultActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.tara.cameraapplication;
+package com.manddprojectconsultant.camerascanner;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.tara.cameraapplication", appContext.getPackageName());
+        assertEquals("com.manddprojectconsultant.camerascanner", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.tara.cameraapplication.Qrcode;
+package com.manddprojectconsultant.camerascanner.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
-import com.tara.cameraapplication.R;
+import com.manddprojectconsultant.camerascanner.R;
 
 public class ProfileActivity extends AppCompatActivity {
 

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:866141798284:android:1b5ca393f8ea3cbda8a0a9",
         "android_client_info": {
-          "package_name": "com.tara.cameraapplication"
+          "package_name": "com.manddprojectconsultant.camerascanner"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "866141798284-k5o8nam4vn2hcrnoa482sj7coo6usktl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.tara.cameraapplication",
+            "package_name": "com.manddprojectconsultant.camerascanner",
             "certificate_hash": "41d3c9293ad1b893c40f8f2a562429e224a95f8b"
           }
         },

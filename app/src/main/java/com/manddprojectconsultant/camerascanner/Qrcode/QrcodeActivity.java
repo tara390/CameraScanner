@@ -1,4 +1,4 @@
-package com.tara.cameraapplication.Qrcode;
+package com.manddprojectconsultant.camerascanner.Qrcode;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -48,8 +48,8 @@ import com.google.zxing.common.HybridBinarizer;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
-import com.tara.cameraapplication.Barcode.BarcodeActivity;
-import com.tara.cameraapplication.R;
+import com.manddprojectconsultant.camerascanner.Barcode.BarcodeActivity;
+import com.manddprojectconsultant.camerascanner.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -225,7 +225,11 @@ public class QrcodeActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        finish();
+        super.onDestroy();
+    }
 
 
     @Override
@@ -272,6 +276,7 @@ public class QrcodeActivity extends AppCompatActivity {
                             Intent i = new Intent(this, ResultActivity.class);
                             i.putExtra("message", barcode);
                             startActivity(i);
+                            finish();
 
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);

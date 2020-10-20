@@ -1,4 +1,4 @@
-package com.tara.cameraapplication;
+package com.manddprojectconsultant.camerascanner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +19,11 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
-import com.tara.cameraapplication.Qrcode.QrcodeActivity;
+import com.manddprojectconsultant.camerascanner.Qrcode.QrcodeActivity;
 
 public class MainActivity extends AppCompatActivity {
     Animation topanim;
-    int REQUEST_CODE=100;
+    String newVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        checkupdate();
+        //     checkupdate();
 
+
+        new GooglePlayStoreAppVersionNameLoader().execute();
 
         topanim = AnimationUtils.loadAnimation(this, R.anim.animation);
 
@@ -53,48 +55,5 @@ public class MainActivity extends AppCompatActivity {
         }, 4000);
     }
 
-    private void checkupdate() {
 
-
-        final AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-
-        appUpdateInfoTask.addOnSuccessListener(new com.google.android.play.core.tasks.OnSuccessListener<AppUpdateInfo>() {
-
-
-            @Override
-            public void onSuccess(AppUpdateInfo result) {
-
-                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, MainActivity.this, REQUEST_CODE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        });
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (requestCode==REQUEST_CODE){
-            Toast.makeText(this, "Start Download", Toast.LENGTH_SHORT).show();
-
-
-            if (requestCode!=RESULT_OK){
-
-                Log.d("TAG", "Upload fail"+requestCode);
-
-            }
-
-        }
-
-    }
 }

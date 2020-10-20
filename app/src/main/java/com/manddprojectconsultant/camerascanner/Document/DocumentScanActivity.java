@@ -1,4 +1,4 @@
-package com.tara.cameraapplication.Document;
+package com.manddprojectconsultant.camerascanner.Document;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.otaliastudios.cameraview.CameraView;
-import com.tara.cameraapplication.R;
+import com.manddprojectconsultant.camerascanner.R;
 
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
 import static com.otaliastudios.cameraview.controls.Flash.TORCH;

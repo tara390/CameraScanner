@@ -13,7 +13,8 @@
     <string name="result">Result</string>
     <string name="sms_result">SMS Result</string>
     <string name="message">Message</string>
-
+    <string name="restart">Restart the app</string>
     <string name="phone">Phone no</string>
     <string name="send_sms">Send SMS</string>
+    <string name="update_downloaded">Please download the updates</string>
 </resources>
