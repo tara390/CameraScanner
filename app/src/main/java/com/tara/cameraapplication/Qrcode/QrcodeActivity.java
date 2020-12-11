@@ -1,6 +1,7 @@
-package com.manddprojectconsultant.camerascanner.Qrcode;
+package com.tara.cameraapplication.Qrcode;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -48,8 +49,9 @@ import com.google.zxing.common.HybridBinarizer;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
-import com.manddprojectconsultant.camerascanner.Barcode.BarcodeActivity;
-import com.manddprojectconsultant.camerascanner.R;
+import com.tara.cameraapplication.Barcode.BarcodeActivity;
+import com.tara.cameraapplication.DashboardActivity;
+import com.tara.cameraapplication.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -140,6 +142,7 @@ public class QrcodeActivity extends AppCompatActivity {
             RequestMultiplePermission();
 
         }
+
 /*
         Dexter.withActivity(this).withPermissions(Manifest.permission.CAMERA,Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE).withListener(new MultiplePermissionsListener() {
             @Override
@@ -509,14 +512,15 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
-   /* @Override
+   @Override
     public void onBackPressed() {
 
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
-        //   finish();
+      Intent i=new Intent(this, DashboardActivity.class);
+      i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NO_ANIMATION);
+      startActivity(i);
+      overridePendingTransition(0,0);
         super.onBackPressed();
-    }*/
+    }
 
 
 

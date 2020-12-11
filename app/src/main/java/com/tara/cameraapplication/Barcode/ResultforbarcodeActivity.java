@@ -1,4 +1,4 @@
-package com.manddprojectconsultant.camerascanner.Barcode;
+package com.tara.cameraapplication.Barcode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,18 +15,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.ads.AdSize;
+/*import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 
-import com.facebook.ads.AudienceNetworkAds;
-import com.manddprojectconsultant.camerascanner.R;
+import com.facebook.ads.AudienceNetworkAds;*/
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.tara.cameraapplication.R;
 
 public class ResultforbarcodeActivity extends AppCompatActivity {
 
     String  result;
     TextView tvbarcoderesult;
     ImageView ivbarcodebackpressed;
-    AdView mAdView;
+   // AdView mAdView;
+
+    AdView madview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +59,15 @@ public class ResultforbarcodeActivity extends AppCompatActivity {
 
     private void MobileAdsview() {
 
-        AudienceNetworkAds.initialize(this);
+      /*  AudienceNetworkAds.initialize(this);
         mAdView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
         LinearLayout ads=findViewById(R.id.adsforbarcode);
         ads.addView(mAdView);
-        mAdView.loadAd();
+        mAdView.loadAd();*/
+
+        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        madview.loadAd(adRequest);
 
 
 

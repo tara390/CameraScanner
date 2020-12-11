@@ -242,7 +242,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/adsforprofile"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -253,6 +253,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView3"
         app:layout_constraintVertical_bias="0.847">
+
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adprofiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-8674673470489334/9755968301"/>
+
+
 
 
 

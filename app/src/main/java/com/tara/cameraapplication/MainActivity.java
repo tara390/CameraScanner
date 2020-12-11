@@ -1,4 +1,4 @@
-package com.manddprojectconsultant.camerascanner;
+package com.tara.cameraapplication;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +19,8 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
-import com.manddprojectconsultant.camerascanner.Qrcode.QrcodeActivity;
+import com.tara.cameraapplication.Document.DocumentScanActivity;
+import com.tara.cameraapplication.Qrcode.QrcodeActivity;
 
 public class MainActivity extends AppCompatActivity {
     Animation topanim;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent intent = new Intent(MainActivity.this, QrcodeActivity.class);
+                Intent intent = new Intent(MainActivity.this, DocumentScanActivity.class);
                 //2 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);

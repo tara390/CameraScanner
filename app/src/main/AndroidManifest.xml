@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.manddprojectconsultant.camerascanner">
+    package="com.tara.cameraapplication">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -29,17 +29,37 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Mytheme">
+
+
         <activity android:name=".Barcode.ResultforbarcodeActivity"
             android:parentActivityName=".Barcode.BarcodeActivity">
 
         </activity>
 
-        <activity android:name="com.facebook.ads.AudienceNetworkActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+       <!-- <activity android:name="com.facebook.ads.AudienceNetworkActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8674673470489334~6991560436"/>
+
+
+
+
+
+
 
         <activity android:name=".Qrcode.SmsActivity" />
         <activity android:name=".Qrcode.GeoLocationActivity" />
-        <activity android:name=".Qrcode.ProfileActivity" />
+        <activity android:name=".Qrcode.ProfileActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".Barcode.BarcodeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -68,7 +88,11 @@
             android:name=".DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
-            android:noHistory="true" />
+            android:noHistory="true" >
+
+
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -79,7 +103,11 @@
 
         <activity
             android:name=".Qrcode.QrcodeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden">
+
+
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -87,11 +115,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

@@ -1,5 +1,5 @@
 
-package com.manddprojectconsultant.camerascanner.Qrcode;
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,11 +15,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.textfield.TextInputEditText;
-import com.manddprojectconsultant.camerascanner.R;
+import com.tara.cameraapplication.R;
 
 public class SmsActivity extends AppCompatActivity {
 
@@ -52,14 +52,17 @@ public class SmsActivity extends AppCompatActivity {
 
     private void MobileAdsview() {
 
-        AudienceNetworkAds.initialize(this);
+       /* AudienceNetworkAds.initialize(this);
         adView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
         LinearLayout ads=findViewById(R.id.adsforsms);
         ads.addView(adView);
         adView.loadAd();
+*/
 
 
-
+        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
     }
 
@@ -120,6 +123,9 @@ public class SmsActivity extends AppCompatActivity {
     }
 
     private void initviews() {
+
+        //Adview
+        adView=findViewById(R.id.adsforsms);
 
         //EditTextViews
         tvmessage = findViewById(R.id.tvmessage);

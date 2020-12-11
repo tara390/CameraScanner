@@ -1,4 +1,4 @@
-package com.manddprojectconsultant.camerascanner.Qrcode;
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,12 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.ads.Ad;
+/*import com.facebook.ads.Ad;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkActivity;
-import com.facebook.ads.AudienceNetworkAds;
-import com.manddprojectconsultant.camerascanner.R;
+import com.facebook.ads.AudienceNetworkAds;*/
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.tara.cameraapplication.R;
 
 public class ResultActivity extends AppCompatActivity {
     TextView tvresult;
@@ -44,20 +47,23 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        if (adView!=null){
+       /* if (adView!=null){
             adView.destroy();
-        }
+        }*/
         super.onDestroy();
     }
 
     private void MobileAdsview() {
 
-        AudienceNetworkAds.initialize(this);
+       /* AudienceNetworkAds.initialize(this);
         adView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
         LinearLayout ads=findViewById(R.id.adsforresult);
         ads.addView(adView);
-        adView.loadAd();
+        adView.loadAd();*/
 
+        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 
 
@@ -69,6 +75,7 @@ public class ResultActivity extends AppCompatActivity {
         ivtext = findViewById(R.id.ivtext);
         //btncopytext=findViewById(R.id.btn_copytext);
 
+        adView=findViewById(R.id.adsforresult);
         tvresult = findViewById(R.id.tvresult);
         ImageView ivbackpressed = findViewById(R.id.ivbackpressed);
         if (message != null) {

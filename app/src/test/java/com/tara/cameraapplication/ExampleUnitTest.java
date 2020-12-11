@@ -1,4 +1,4 @@
-package com.manddprojectconsultant.camerascanner;
+package com.tara.cameraapplication;
 
 import org.junit.Test;
 
