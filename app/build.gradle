@@ -7,7 +7,7 @@ android {
         applicationId "com.tara.cameraapplication"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 4
+        versionCode 5
         versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

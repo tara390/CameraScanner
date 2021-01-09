@@ -39,6 +39,7 @@ public class ResultActivity extends AppCompatActivity {
         result = getIntent().getStringExtra("result");
         message = getIntent().getStringExtra("message");
 
+        adView=findViewById(R.id.adsforresult);
         init();
         MobileAdsview();
 
@@ -75,7 +76,7 @@ public class ResultActivity extends AppCompatActivity {
         ivtext = findViewById(R.id.ivtext);
         //btncopytext=findViewById(R.id.btn_copytext);
 
-        adView=findViewById(R.id.adsforresult);
+
         tvresult = findViewById(R.id.tvresult);
         ImageView ivbackpressed = findViewById(R.id.ivbackpressed);
         if (message != null) {

@@ -39,6 +39,8 @@ public class SmsActivity extends AppCompatActivity {
         phone = getIntent().getStringExtra("phone");
         message = getIntent().getStringExtra("message");
 
+
+        adView=findViewById(R.id.adsforsms);
         MobileAdsview();
         initviews();
         setSms();
@@ -124,8 +126,6 @@ public class SmsActivity extends AppCompatActivity {
 
     private void initviews() {
 
-        //Adview
-        adView=findViewById(R.id.adsforsms);
 
         //EditTextViews
         tvmessage = findViewById(R.id.tvmessage);

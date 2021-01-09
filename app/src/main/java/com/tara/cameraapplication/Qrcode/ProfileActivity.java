@@ -35,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
         email=getIntent().getStringExtra("email");
         website=getIntent().getStringExtra("website");
 */
+        adsforprofile = findViewById(R.id.adprofiles);
         initviews();
         MobileAdsforprofile();
 
@@ -95,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvphone = findViewById(R.id.tvphone);
         tvemail = findViewById(R.id.tvemail);
         tvwebsite = findViewById(R.id.tvwebsite);
-        adsforprofile = findViewById(R.id.adprofiles);
+
         ivprofilebackpressed = findViewById(R.id.ivprofilebackpressed);
 
     }

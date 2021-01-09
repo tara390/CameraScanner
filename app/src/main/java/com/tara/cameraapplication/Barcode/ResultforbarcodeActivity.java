@@ -43,9 +43,14 @@ public class ResultforbarcodeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 */
 
+
         result = getIntent().getStringExtra("barcode");
 
         initforbarcode();
+
+
+        madview=findViewById(R.id.adsforbarcode);
+
         MobileAdsview();
         setOnClick();
 
