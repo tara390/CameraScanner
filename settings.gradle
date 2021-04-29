@@ -1,2 +1,4 @@
+include ':scanlibrarya'
 include ':app'
+project(':scanlibrarya').projectDir = new File(rootDir, 'scanlibrary/')
 rootProject.name = "Camera Application"
