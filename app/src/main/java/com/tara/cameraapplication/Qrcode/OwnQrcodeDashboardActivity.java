@@ -40,18 +40,37 @@ public class OwnQrcodeDashboardActivity extends AppCompatActivity {
 
 
                 MultiFormatWriter formatWriter = new MultiFormatWriter();
-                try {
-                    BitMatrix matrix = formatWriter.encode(name, BarcodeFormat.QR_CODE, 350, 350);
-                    BarcodeEncoder encoder = new BarcodeEncoder();
-                    bitmap = encoder.createBitmap(matrix);
-                    qrcodeDashboardBinding.displayImageview.setImageBitmap(bitmap);
 
-                    InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    manager.hideSoftInputFromWindow(qrcodeDashboardBinding.entertextTextview.getApplicationWindowToken(), 0);
+                if (qrcodeDashboardBinding.rbQrcode.isChecked()) {
+                    try {
+                        BitMatrix matrix = formatWriter.encode(name, BarcodeFormat.QR_CODE, 350, 350);
+                        BarcodeEncoder encoder = new BarcodeEncoder();
+                        bitmap = encoder.createBitmap(matrix);
+                        qrcodeDashboardBinding.displayImageview.setImageBitmap(bitmap);
+
+                        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        manager.hideSoftInputFromWindow(qrcodeDashboardBinding.entertextTextview.getApplicationWindowToken(), 0);
 
 
-                } catch (WriterException e) {
-                    e.printStackTrace();
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                if (qrcodeDashboardBinding.rbBarcode.isChecked()) {
+                    try {
+                        BitMatrix matrix = formatWriter.encode(name, BarcodeFormat.CODE_128, 350, 350);
+                        BarcodeEncoder encoder = new BarcodeEncoder();
+                        bitmap = encoder.createBitmap(matrix);
+                        qrcodeDashboardBinding.displayImageview.setImageBitmap(bitmap);
+
+                        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        manager.hideSoftInputFromWindow(qrcodeDashboardBinding.entertextTextview.getApplicationWindowToken(), 0);
+
+
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
