@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.tara.cameraapplication"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 6
         versionName "1.6"
 
@@ -37,8 +37,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-
+    namespace 'com.tara.cameraapplication'
 
 
 }
@@ -46,7 +45,6 @@ android {
 dependencies {
 
 
-    implementation project(':scanlibrarya')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
