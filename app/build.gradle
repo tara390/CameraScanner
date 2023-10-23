@@ -99,7 +99,7 @@ dependencies {
 
 
     //Ads format
-    implementation 'com.google.android.gms:play-services-ads:19.4.0'
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
 
     //Ads
     //implementation 'com.facebook.android:audience-network-sdk:6.1.0'
