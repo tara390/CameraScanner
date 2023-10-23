@@ -7,8 +7,8 @@ android {
         applicationId "com.tara.cameraapplication"
         minSdkVersion 24
         targetSdkVersion 34
-        versionCode 6
-        versionName "1.6"
+        versionCode 7
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -23,7 +23,7 @@ android {
 
         applicationVariants.all { variant ->
             variant.outputs.all { output ->
-                outputFileName = new File("Cammera Scanner" + variant.versionName + ".apk")
+                outputFileName = new File("Camera Scanner" + variant.versionName + ".apk")
             }
         }
 
