@@ -31,7 +31,7 @@ public class ResultforbarcodeActivity extends AppCompatActivity {
     ImageView ivbarcodebackpressed;
    // AdView mAdView;
 
-    AdView madview;
+    //AdView madview;
 
 
     @Override
@@ -49,7 +49,7 @@ public class ResultforbarcodeActivity extends AppCompatActivity {
         initforbarcode();
 
 
-        madview=findViewById(R.id.adsforbarcode);
+        //madview=findViewById(R.id.adsforbarcode);
 
         MobileAdsview();
         setOnClick();
@@ -70,9 +70,9 @@ public class ResultforbarcodeActivity extends AppCompatActivity {
         ads.addView(mAdView);
         mAdView.loadAd();*/
 
-        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+       /* MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
-        madview.loadAd(adRequest);
+        madview.loadAd(adRequest);*/
 
 
 

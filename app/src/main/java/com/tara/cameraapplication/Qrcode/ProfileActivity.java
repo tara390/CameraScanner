@@ -23,7 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
     String name, phone, email, website;
     TextView tvName, tvphone, tvemail, tvwebsite;
     ImageView ivprofilebackpressed;
-    AdView adsforprofile;
+   // AdView adsforprofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
         email=getIntent().getStringExtra("email");
         website=getIntent().getStringExtra("website");
 */
-        adsforprofile = findViewById(R.id.adprofiles);
+       // adsforprofile = findViewById(R.id.adprofiles);
         initviews();
         MobileAdsforprofile();
 
@@ -46,9 +46,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void MobileAdsforprofile() {
 
-        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+      /*  MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
-        adsforprofile.loadAd(adRequest);
+        adsforprofile.loadAd(adRequest);*/
 
 
        /* AudienceNetworkAds.initialize(this);

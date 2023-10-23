@@ -27,7 +27,7 @@ public class SmsActivity extends AppCompatActivity {
     String phone, message;
     Button btnsms;
     ImageView ivsmsbackpressed;
-    AdView adView;
+   // AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,8 @@ public class SmsActivity extends AppCompatActivity {
         message = getIntent().getStringExtra("message");
 
 
-        adView=findViewById(R.id.adsforsms);
-        MobileAdsview();
+       /* adView=findViewById(R.id.adsforsms);
+        MobileAdsview();*/
         initviews();
         setSms();
         btnsmsclick();
@@ -52,21 +52,21 @@ public class SmsActivity extends AppCompatActivity {
 
     }
 
-    private void MobileAdsview() {
+ /*   private void MobileAdsview() {
 
-       /* AudienceNetworkAds.initialize(this);
+       *//* AudienceNetworkAds.initialize(this);
         adView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
         LinearLayout ads=findViewById(R.id.adsforsms);
         ads.addView(adView);
         adView.loadAd();
-*/
+*//*
 
 
         MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-    }
+    }*/
 
     private void setSms() {
 

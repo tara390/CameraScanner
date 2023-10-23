@@ -29,7 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     TextView tvresult;
     String result, message;
     ImageView ivweb, ivtext;
-    AdView adView;
+   // AdView adView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class ResultActivity extends AppCompatActivity {
         result = getIntent().getStringExtra("result");
         message = getIntent().getStringExtra("message");
 
-        adView=findViewById(R.id.adsforresult);
+        //adView=findViewById(R.id.adsforresult);
         init();
         MobileAdsview();
 
@@ -62,9 +62,9 @@ public class ResultActivity extends AppCompatActivity {
         ads.addView(adView);
         adView.loadAd();*/
 
-        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
+       /* MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        adView.loadAd(adRequest);*/
 
 
 
