@@ -20,15 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -46,6 +42,11 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
@@ -62,10 +63,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.otaliastudios.cameraview.controls.Flash.OFF;
 import static com.otaliastudios.cameraview.controls.Flash.TORCH;
 
@@ -83,7 +80,6 @@ public class QrcodeActivity extends AppCompatActivity {
 
     public static final int RequestPermissionCode = 7;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,69 +87,14 @@ public class QrcodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode);
 
 
-
-
-
-
         init();
-
-        if (CheckingPermissionIsEnabledOrNot()) {
-            //Entered in if Permission is granted
-
-
-            setupCamera();
-
-
-            Snackbar snackbar = Snackbar
-                    .make(linearLayout, "Please rate our application ", Snackbar.LENGTH_LONG)
-                    .setAction("Go", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            launchMarket();
-
-                        }
-                    });
-
-            snackbar.setDuration(8000);
-            snackbar.setActionTextColor(getColor(R.color.colorblue));
-            snackbar.show();
-
-
-            tvbarcode.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent barcode = new Intent(QrcodeActivity.this, BarcodeActivity.class);
-                    barcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(barcode);
-                    finish();
-                }
-            });
-        } else {
-
-            //Calling method to enable permission.
-            RequestMultiplePermission();
-
-        }
-
-/*
-        Dexter.withActivity(this).withPermissions(Manifest.permission.CAMERA,Manifest.permission.SEND_SMS,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE).withListener(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                setupCamera();
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-
-            }
-        }).check();*/
+        requestPermission();
 
 
     }
 
 
-
-   private void launchMarket() {
+    private void launchMarket() {
         Uri uri = Uri.parse("market://details?id=" + getPackageName());
         Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
         try {
@@ -164,12 +105,10 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
-
-
     private void init() {
 
         //Linear layout for snackbar
-        linearLayout=findViewById(R.id.linearLayout);
+        linearLayout = findViewById(R.id.linearLayout);
 
 
         //TextView
@@ -188,15 +127,20 @@ public class QrcodeActivity extends AppCompatActivity {
 
         //Image CLick
 
-        flashon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        flashon.setOnClickListener(v -> {
 
-                camera_view.setFlash(OFF);
-                flashoff.setVisibility(View.VISIBLE);
-                flashon.setVisibility(View.GONE);
+            camera_view.setFlash(OFF);
+            flashoff.setVisibility(View.VISIBLE);
+            flashon.setVisibility(View.GONE);
 
-            }
+        });
+
+        tvbarcode.setOnClickListener(v -> {
+            Intent qrcode = new Intent(this, BarcodeActivity.class);
+            qrcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(qrcode);
+            finish();
+
         });
 
         flashoff.setOnClickListener(new View.OnClickListener() {
@@ -213,9 +157,10 @@ public class QrcodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent pickIntent = new Intent(Intent.ACTION_PICK);
-                pickIntent.setDataAndType( android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-                startActivityForResult(pickIntent, 111);        }
+                startActivityForResult(pickIntent, 111);
+            }
         });
 
     }
@@ -310,7 +255,6 @@ public class QrcodeActivity extends AppCompatActivity {
                 }
         }
     }
-
 
 
     private void setupCamera() {
@@ -469,7 +413,7 @@ public class QrcodeActivity extends AppCompatActivity {
 
     }
 
-    private void createforResult(String name, String phone,  String email, String website) {
+    private void createforResult(String name, String phone, String email, String website) {
 
         Intent profile = new Intent(QrcodeActivity.this, ProfileActivity.class);
         profile.putExtra("name", name);
@@ -491,7 +435,6 @@ public class QrcodeActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
 
 
-
     }
 
     private FirebaseVisionImage getVisioImagefromframe(Frame frame) {
@@ -504,19 +447,16 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
-   @Override
+    @Override
     public void onBackPressed() {
 
      /* Intent i=new Intent(this, DashboardActivity.class);
       i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NO_ANIMATION);
       startActivity(i);
       overridePendingTransition(0,0);*/
-       finish();
-       super.onBackPressed();
-   }
-
-
-
+        finish();
+        super.onBackPressed();
+    }
 
 
     @SuppressLint("StaticFieldLeak")
@@ -547,102 +487,86 @@ public class QrcodeActivity extends AppCompatActivity {
 
     }
 
-    public boolean CheckingPermissionIsEnabledOrNot() {
 
-        int FirstPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
-        //int  = ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS);
-        int SecondPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int ThirdPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
-        int FourthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Dexter.withActivity(this)
+                    // below line is use to request the number of permissions which are required in our app.
+                    .withPermissions(android.Manifest.permission.CAMERA,
+                            android.Manifest.permission.READ_MEDIA_IMAGES,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.RECORD_AUDIO)
+                    // after adding permissions we are calling an with listener method.
+                    .withListener(new MultiplePermissionsListener() {
+                        @Override
+                        public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                            // this method is called when all permissions are granted
+                            if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                                // do you work now
+                                setupCamera();
+                            }
+                            // check for permanent denial of any permission
+                            if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
+                                // permission is denied permanently, we will show user a dialog message.
+                                showSettingsDialog();
+                            }
+                        }
 
-        return FirstPermissionResult == PackageManager.PERMISSION_GRANTED &&
-                SecondPermissionResult == PackageManager.PERMISSION_GRANTED &&
-                ThirdPermissionResult == PackageManager.PERMISSION_GRANTED &&
-                FourthPermissionResult == PackageManager.PERMISSION_GRANTED;
-               // FifthPermissionResult == PackageManager.PERMISSION_GRANTED;
-    }
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                            // this method is called when user grants some permission and denies some of them.
+                            permissionToken.continuePermissionRequest();
+                        }
+                    }).withErrorListener(error -> {
+                        // we are displaying a toast message for error message.
+                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    })
+                    // below line is use to run the permissions on same thread and to check the permissions
+                    .onSameThread().check();
 
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Dexter.withActivity(this)
+                    // below line is use to request the number of permissions which are required in our app.
+                    .withPermissions(android.Manifest.permission.CAMERA,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.RECORD_AUDIO)
+                    // after adding permissions we are calling an with listener method.
+                    .withListener(new MultiplePermissionsListener() {
+                        @Override
+                        public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                            // this method is called when all permissions are granted
+                            if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                                // do you work now
+                                setupCamera();
+                            }
+                            // check for permanent denial of any permission
+                            if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
+                                // permission is denied permanently, we will show user a dialog message.
+                                showSettingsDialog();
+                            }
+                        }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void RequestMultiplePermission() {
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                            // this method is called when user grants some permission and denies some of them.
+                            permissionToken.continuePermissionRequest();
+                        }
+                    }).withErrorListener(error -> {
+                        // we are displaying a toast message for error message.
+                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    })
+                    // below line is use to run the permissions on same thread and to check the permissions
+                    .onSameThread().check();
 
-        // Creating String Array with Permissions.
-        ActivityCompat.requestPermissions(QrcodeActivity.this, new String[]
-                {
-                        CAMERA,
-                        WRITE_EXTERNAL_STORAGE,
-                        ACCESS_FINE_LOCATION,
-                        RECORD_AUDIO
-                }, RequestPermissionCode);
-
-        Snackbar snackbar = Snackbar
-                .make(linearLayout, "Please rate our application ", Snackbar.LENGTH_LONG)
-                .setAction("Go", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        launchMarket();
-
-                    }
-                });
-
-        snackbar.setDuration(8000);
-        snackbar.setActionTextColor(getColor(R.color.colorblue));
-        snackbar.show();
-
-
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
-
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                && grantResults[3] == PackageManager.PERMISSION_GRANTED
-               ) {
-            // now, you have permission go ahead
-
-           /* Intent reOpen = new Intent (QrcodeActivity.this, QrcodeActivity.class);
-            startActivity(reOpen);
-            finish();
-            overridePendingTransition( 0, 0);
-            startActivity(getIntent());
-            overridePendingTransition( 0, 0);*/
-           setupCamera();
-
-        } else {
-
-            Toast.makeText(this, "Please allow all the permission ", Toast.LENGTH_LONG).show();
-            finish();
-
-
-     /*       if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.READ_CALL_LOG)) {
-                // now, user has denied permission (but not permanently!)
-
-            } else {
-
-                // now, user has denied permission permanently!
-
-                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "You have previously declined this permission.\n" +
-                        "You must approve this permission in \"Permissions\" in the app settings on your device.", Snackbar.LENGTH_LONG).setAction("Settings", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
-
-                    }
-                });
-                View snackbarView = snackbar.getView();
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setMaxLines(5);  //Or as much as you need
-                snackbar.show();
-
-            }
-*/
         }
-        return;
+
     }
+
+    private void showSettingsDialog() {
+
+    }
+
+
 }
