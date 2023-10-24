@@ -1,4 +1,5 @@
-package com.tara.cameraapplication;
+
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,14 +12,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.tara.cameraapplication.R;
 
 public class SmsActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class SmsActivity extends AppCompatActivity {
     String phone, message;
     Button btnsms;
     ImageView ivsmsbackpressed;
-    AdView adView;
+   // AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,9 @@ public class SmsActivity extends AppCompatActivity {
         phone = getIntent().getStringExtra("phone");
         message = getIntent().getStringExtra("message");
 
-        MobileAdsview();
+
+       /* adView=findViewById(R.id.adsforsms);
+        MobileAdsview();*/
         initviews();
         setSms();
         btnsmsclick();
@@ -49,14 +52,21 @@ public class SmsActivity extends AppCompatActivity {
 
     }
 
-    private void MobileAdsview() {
+ /*   private void MobileAdsview() {
 
-        MobileAds.initialize(this,"ca-app-pub-8674673470489334~6991560436");
-        adView = findViewById(R.id.adsinsmsview);
+       *//* AudienceNetworkAds.initialize(this);
+        adView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
+        LinearLayout ads=findViewById(R.id.adsforsms);
+        ads.addView(adView);
+        adView.loadAd();
+*//*
+
+
+        MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-    }
+    }*/
 
     private void setSms() {
 
@@ -103,16 +113,19 @@ public class SmsActivity extends AppCompatActivity {
         });
 
     }
-
+    
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
+        Intent onback=new Intent(this, QrcodeActivity.class);
+        onback.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(onback);
+        overridePendingTransition(0, 0);
         super.onBackPressed();
     }
 
     private void initviews() {
+
 
         //EditTextViews
         tvmessage = findViewById(R.id.tvmessage);

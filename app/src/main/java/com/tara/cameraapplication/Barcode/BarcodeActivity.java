@@ -1,20 +1,18 @@
-package com.tara.cameraapplication;
+package com.tara.cameraapplication.Barcode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,14 +36,12 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
+import com.tara.cameraapplication.Qrcode.QrcodeActivity;
+import com.tara.cameraapplication.R;
+import com.tara.cameraapplication.Qrcode.ResultActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -77,8 +73,24 @@ public class BarcodeActivity extends AppCompatActivity {
         init();
         setupCameraforbarcode();
 
+        onClick();
 
 
+    }
+
+    private void onClick() {
+
+        qrcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent qrcode = new Intent(BarcodeActivity.this, QrcodeActivity.class);
+                qrcode.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(qrcode);
+                finish();
+
+
+            }
+        });
 
 
     }
@@ -195,10 +207,15 @@ public class BarcodeActivity extends AppCompatActivity {
     private void createDialog(String rawValue) {
 
 
-        Intent intent = new Intent(BarcodeActivity.this, ResultActivity.class);
-        intent.putExtra("result", rawValue);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(BarcodeActivity.this, ResultforbarcodeActivity.class);
+        intent.putExtra("barcode", rawValue);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //
         startActivity(intent);
+        overridePendingTransition(0, 0);
+
 
     }
 
@@ -266,22 +283,13 @@ public class BarcodeActivity extends AppCompatActivity {
         qrcode = findViewById(R.id.qrcode);
         barcode = findViewById(R.id.barcode);
 
-        qrcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(BarcodeActivity.this, QrcodeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-
-
-            }
-        });
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
         switch (requestCode) {
             case 111:
                 if (resultCode == RESULT_OK) {
@@ -307,26 +315,20 @@ public class BarcodeActivity extends AppCompatActivity {
                             bMap.getHeight(), intArray);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
-
                     Reader reader = new MultiFormatReader();// use this otherwise
                     // ChecksumException
                     try {
-
                         Hashtable<DecodeHintType, Object> decodeHints = new Hashtable<DecodeHintType, Object>();
                         decodeHints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
                         decodeHints.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
 
                         Result result = reader.decode(bitmap, decodeHints);
                         //*I have created a global string variable by the name of barcode to easily manipulate data across the application*//
-                        barcod = result.getText();
+                        //barcode = result.getText();
 
                         //do something with the results for demo i created a popup dialog
-                        if (barcod != null) {
-                            Intent i = new Intent(this, ResultActivity.class);
-                            i.putExtra("message", barcod);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                            finish();
+                        if (barcode != null) {
+                            Toast.makeText(this, "Result is "+barcod, Toast.LENGTH_LONG).show();
 
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -337,7 +339,7 @@ public class BarcodeActivity extends AppCompatActivity {
                             alert1.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent i = new Intent(getBaseContext(), BarcodeActivity.class);
+                                    Intent i = new Intent(getBaseContext(), QrcodeActivity.class);
                                     startActivity(i);
                                 }
                             });

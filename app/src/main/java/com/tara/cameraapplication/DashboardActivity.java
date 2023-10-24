@@ -1,12 +1,15 @@
 package com.tara.cameraapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import com.tara.cameraapplication.Document.DocumentScanActivity;
+import com.tara.cameraapplication.Qrcode.QRCODEDashboardActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -30,10 +33,11 @@ public class DashboardActivity extends AppCompatActivity {
         qrcodescan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DashboardActivity.this, QrcodeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent i = new Intent(DashboardActivity.this, QRCODEDashboardActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(i);
-
+                finish();
+                overridePendingTransition(0,0);
             }
         });
 
@@ -41,8 +45,11 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DashboardActivity.this, DocumentScanActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_ANIMATION );
                 startActivity(intent);
+                overridePendingTransition(0,0);
+                finish();
+
 
             }
         });

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tara.cameraapplication">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -30,16 +28,24 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Mytheme">
-
+        <activity android:name=".Qrcode.OwnQrcodeDashboardActivity"></activity>
+        <activity android:name=".Qrcode.QRCODEDashboardActivity" />
+        <activity
+            android:name=".Barcode.ResultforbarcodeActivity"
+            android:parentActivityName=".Barcode.BarcodeActivity" />
+        <!--
+ <activity android:name="com.facebook.ads.AudienceNetworkActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8674673470489334~6991560436" />
 
-        <activity android:name=".SmsActivity"></activity>
-        <activity android:name=".GeoLocationActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".Qrcode.SmsActivity" />
+        <activity android:name=".Qrcode.GeoLocationActivity" />
+        <activity android:name=".Qrcode.ProfileActivity" />
         <activity
-            android:name=".BarcodeActivity"
+            android:name=".Barcode.BarcodeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:noHistory="true"
@@ -53,12 +59,12 @@
             android:value="ocr" />
 
         <activity
-            android:name=".ResultActivity"
+            android:name=".Qrcode.ResultActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:noHistory="true" />
         <activity
-            android:name=".DocumentScanActivity"
+            android:name=".Document.DocumentScanActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:noHistory="true" />
@@ -76,27 +82,21 @@
             android:value="barcode" />
 
         <activity
-            android:name=".QrcodeActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            >
-
-
-        </activity>
+            android:name=".Qrcode.QrcodeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:noHistory="true"
-            android:windowSoftInputMode="adjustResize">
-
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
     </application>
 

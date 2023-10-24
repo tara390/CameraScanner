@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    tools:context=".SmsActivity">
+    tools:context=".Qrcode.SmsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -104,9 +104,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         app:layout_constraintVertical_bias="0.184" />
 
-    <RelativeLayout
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -114,16 +116,16 @@
         app:layout_constraintTop_toBottomOf="@+id/btnsms"
         app:layout_constraintVertical_bias="0.922">
 
+
         <com.google.android.gms.ads.AdView
-            android:id="@+id/adsinsmsview"
+            android:id="@+id/adsforsms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-8674673470489334/2613331722" />
+            ads:adUnitId="ca-app-pub-8674673470489334/9755968301"/>
 
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

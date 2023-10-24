@@ -1,4 +1,4 @@
-package com.tara.cameraapplication;
+package com.tara.cameraapplication.Qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,21 +11,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*import com.facebook.ads.Ad;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.AudienceNetworkActivity;
+import com.facebook.ads.AudienceNetworkAds;*/
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.tara.cameraapplication.R;
 
 public class ResultActivity extends AppCompatActivity {
     TextView tvresult;
     String result, message;
     ImageView ivweb, ivtext;
-    AdView mAdView;
+   // AdView adView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,35 +39,43 @@ public class ResultActivity extends AppCompatActivity {
         result = getIntent().getStringExtra("result");
         message = getIntent().getStringExtra("message");
 
+        //adView=findViewById(R.id.adsforresult);
         init();
         MobileAdsview();
 
     }
 
+    @Override
+    protected void onDestroy() {
+
+       /* if (adView!=null){
+            adView.destroy();
+        }*/
+        super.onDestroy();
+    }
+
     private void MobileAdsview() {
 
+       /* AudienceNetworkAds.initialize(this);
+        adView=new AdView(this,"910335046161931_910339876161448", AdSize.BANNER_HEIGHT_50);
+        LinearLayout ads=findViewById(R.id.adsforresult);
+        ads.addView(adView);
+        adView.loadAd();*/
 
-        AdView adView=new AdView(this);
-        adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId("ca-app-pub-8674673470489334/2613331722");
-
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-
-        mAdView = findViewById(R.id.adsview);
+       /* MobileAds.initialize(this, "ca-app-pub-8674673470489334~6991560436");
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        adView.loadAd(adRequest);*/
+
+
+
 
     }
 
 
     private void init() {
-        ivweb = findViewById(R.id.ivweb);
         ivtext = findViewById(R.id.ivtext);
         //btncopytext=findViewById(R.id.btn_copytext);
+
 
         tvresult = findViewById(R.id.tvresult);
         ImageView ivbackpressed = findViewById(R.id.ivbackpressed);
@@ -97,8 +109,11 @@ public class ResultActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
+        Intent onback=new Intent(this, QrcodeActivity.class);
+        onback.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        onback.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(onback);
+        overridePendingTransition(0, 0);
         super.onBackPressed();
     }
 }
