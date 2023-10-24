@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Qrcode.QrcodeActivity">
 
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -16,9 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-
-
 
         <FrameLayout
             android:id="@+id/frameLayout"
@@ -38,7 +34,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:padding="10dp"
-
                     android:src="@drawable/ic_baseline_flash_off_24"
                     />
                 <ImageView
@@ -73,9 +68,6 @@
                 android:layout_marginBottom="60dp"
                 android:background="@drawable/square" />
 
-
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -83,7 +75,6 @@
                 android:padding="10dp"
                 android:layout_margin="10dp"
                 android:elevation="10dp">
-
 
                 <TextView
                     android:id="@+id/tvqrcode"
@@ -106,24 +97,17 @@
                     android:layout_alignParentRight="true"
                     android:text="Barcode" />
 
-
-
-
-
-
-
                 <ImageView
                     android:id="@+id/btn_start_again"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:tint="@color/colorblue"
                     android:layout_centerHorizontal="true"
                     android:editable="false"
                     android:saveEnabled="true"
-
                     android:scaleType="center"
-                    android:src="@drawable/circle" />
+                    android:src="@drawable/circle"
+                    app:tint="@color/colorblue" />
 
                 <ImageView
                     android:id="@+id/ivgallery"
@@ -135,13 +119,6 @@
                     android:src="@drawable/gallery"
                     android:visibility="visible" />
             </RelativeLayout>
-
-
-
         </FrameLayout>
-
-
-
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

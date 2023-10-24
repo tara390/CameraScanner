@@ -2,6 +2,7 @@
 package com.tara.cameraapplication.Qrcode;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +26,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.ActivityResult;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -51,7 +60,9 @@ import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
 import com.tara.cameraapplication.Barcode.BarcodeActivity;
+import com.tara.cameraapplication.BuildConfig;
 import com.tara.cameraapplication.R;
+import com.tara.cameraapplication.utils.Constant;
 
 import org.jsoup.Jsoup;
 
@@ -78,6 +89,10 @@ public class QrcodeActivity extends AppCompatActivity {
     FirebaseVisionBarcodeDetector detector;
     LinearLayout linearLayout;
 
+    private static final int MY_REQUEST_CODE = 1000;
+    AppUpdateManager appUpdateManager;
+    InstallStateUpdatedListener listener;
+
     public static final int RequestPermissionCode = 7;
 
     @Override
@@ -85,8 +100,7 @@ public class QrcodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_qrcode);
-
-
+        appUpdateManager = AppUpdateManagerFactory.create(this);
         init();
         requestPermission();
 
@@ -164,13 +178,6 @@ public class QrcodeActivity extends AppCompatActivity {
         });
 
     }
-
-    @Override
-    protected void onDestroy() {
-        finish();
-        super.onDestroy();
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -253,11 +260,42 @@ public class QrcodeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                break;
+            case MY_REQUEST_CODE: {
+                switch (resultCode){
+                    case Activity.RESULT_OK:{
+
+                        Intent intent = getPackageManager().getLaunchIntentForPackage("com.package.name");
+                        if (intent != null) {
+                            // We found the activity now start the activity
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        } else {
+                            // Bring user to the market or let them choose an app?
+                            intent = new Intent(Intent.ACTION_VIEW);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse("market://details?id=" + "com.package.name"));
+                            startActivity(intent);
+                        }
+                        finish();
+                        break;
+                    }
+                    case Activity.RESULT_CANCELED:{
+                        Log.e(Constant.TAG, "" + "Result Cancelled");
+                        break;
+                    }
+                    case ActivityResult.RESULT_IN_APP_UPDATE_FAILED: {
+                        Log.e(Constant.TAG, "" + "Update Failure");
+                        break;
+                    }
+                }
+            }
         }
     }
 
 
     private void setupCamera() {
+        checkUpdate();
 
         btn_start_again.setEnabled(isDetected);
 
@@ -569,4 +607,57 @@ public class QrcodeActivity extends AppCompatActivity {
     }
 
 
+    private void checkUpdate() {
+        listener = new InstallStateUpdatedListener() {
+            @Override
+            public void onStateUpdate(@NonNull InstallState installState) {
+                if(installState.installStatus() == InstallStatus.DOWNLOADED){
+                    appUpdateManager.completeUpdate();
+                }
+                else if (installState.installStatus() == InstallStatus.INSTALLED){
+                    if (appUpdateManager != null){
+                        appUpdateManager.unregisterListener(listener);
+                    }
+
+                }
+                else if (installState.installStatus() == InstallStatus.CANCELED || installState.installStatus() == InstallStatus.FAILED){
+                    if (appUpdateManager != null){
+                        if (appUpdateManager != null) {
+                            appUpdateManager.unregisterListener(listener);
+                        }
+                    }
+
+                }
+            }
+        };
+        appUpdateManager.registerListener(listener);
+
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                // Request the update.
+                Log.e(Constant.TAG, "Update available");
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.FLEXIBLE,
+                            this,
+                            MY_REQUEST_CODE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(Constant.TAG, "No Update available");
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        finish();
+        if (appUpdateManager != null && listener != null) {
+            appUpdateManager.unregisterListener(listener);
+        }
+        super.onDestroy();
+    }
 }
